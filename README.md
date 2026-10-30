@@ -1,70 +1,42 @@
-# Getting Started with Create React App
+# Académie Al-Andalous Fès
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Bilingual French/Arabic landing page for language courses and academic tutoring. Built with React 19, Vite 8 and Lucide icons. No backend is required: inquiries open WhatsApp with a prepared message; the visitor sends it themselves.
 
-## Available Scripts
+## Development
 
-In the project directory, you can run:
+```bash
+npm ci
+npm run dev
+```
 
-### `npm start`
+Use the Local URL printed by Vite (port 3000 by default; the next available port if occupied).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+npm test       # Message encoding and language fallback regression checks
+npm run build # Production output in dist/
+npm run preview
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Content and design
 
-### `npm test`
+- `src/config/academyConfig.js`: original academy data, contacts, nine programs, schedules, benefits, registration steps and FAQs. Both French and Arabic values are retained.
+- `src/context/LanguageContext.jsx`: translated interface strings and language preference. The preference is the only information written to local storage; the form is kept in memory.
+- `src/index.css`: shared palette, typography, responsive layouts, RTL styles, keyboard focus and reduced-motion support.
+- `src/components/`: individual sections; program details expand inline, and “Personnaliser ma demande” selects the program in the inquiry panel.
+- `public/social-card.png`: branded 1200 × 630 sharing image. Its source generator is `scripts/generate-brand-assets.py` (requires Pillow and the Noto fonts listed there).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The map is explicitly an illustrative diagram. Its Google Maps link uses the latitude and longitude already present in the academy data. Course availability, accreditation, real contact ownership and response-time claims have not been independently verified. The existing demo disclosure is retained; no live online status is simulated.
 
-### `npm run build`
+## Deployment
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Serve the contents of `dist/` using static hosting. No deployment is performed by the build command. The canonical URL, Open Graph URLs and structured organization data in `index.html` retain the existing `academie-alandalous-fes.ma` domain. Synchronize these if the production domain or academy data changes.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The fonts are requested from Google Fonts, with local system fallbacks. The page does not send form values to an application server. A WhatsApp link contains the current inquiry only when the visitor follows that link.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Browser review checklist
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Test French and Arabic at 320, 390, 768 and 1440px.
+- Check menu toggling, Escape, keyboard focus, section anchors and no horizontal overflow.
+- Check all course filters, expanded schedules and course selection in the inquiry panel.
+- Check inquiry preview and URL encoding without sending a real message.
+- Check FAQs, telephone, email, Maps, and browser console.

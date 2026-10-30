@@ -1,165 +1,193 @@
-import React, { useState } from 'react';
-import { useLanguage } from '../context/LanguageContext';
-import { academyConfig } from '../config/academyConfig';
-import { getCourseWhatsAppUrl } from '../utils/whatsapp';
-import { MessageCircle, Clock, Users, Target, BookOpen, Check, Layers, Sparkles } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  ArrowUpRight,
+  Check,
+  ChevronDown,
+  Clock3,
+  Users,
+  CalendarDays,
+  MessageCircle,
+} from "lucide-react";
+import { academyConfig } from "../config/academyConfig";
+import { useLanguage } from "../context/useLanguage";
+import { getCourseWhatsAppUrl } from "../utils/whatsapp";
 
-export default function Courses() {
-  const { lang, t, isRTL, ui } = useLanguage();
-  const [activeCategory, setActiveCategory] = useState('all');
-
-  const filteredCourses = activeCategory === 'all'
-    ? academyConfig.courses
-    : academyConfig.courses.filter(c => c.category === activeCategory);
-
+const courseMarks = {
+  "fr-delf": "Fr",
+  "en-general": "En",
+  "de-goethe": "De",
+  "es-dele": "Es",
+};
+export default function Courses({ onChooseCourse }) {
+  const { lang, t, ui } = useLanguage();
+  const [category, setCategory] = useState("all");
+  const ar = lang === "ar";
+  const courses = academyConfig.courses.filter(
+    (course) => category === "all" || course.category === category,
+  );
   return (
-    <section id="courses" className="py-20 md:py-28 bg-slate-900/40 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-wider">
-            <Layers className="w-3.5 h-3.5" />
-            <span>{ui.navCourses}</span>
+    <section id="courses" className="section courses-section">
+      <div className="container">
+        <div className="section-heading heading-split">
+          <div>
+            <p className="eyebrow">
+              <span className="section-number">01 /</span>
+              {ar ? "برامجنا التكوينية" : "NOS PROGRAMMES"}
+            </p>
+            <h2>
+              {ar ? (
+                <>
+                  طموحك،
+                  <br />
+                  <em>مسار يناسبك.</em>
+                </>
+              ) : (
+                <>
+                  Votre ambition.
+                  <br />
+                  <em>Le bon programme.</em>
+                </>
+              )}
+            </h2>
           </div>
-
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            {lang === 'fr' 
-              ? 'Nos Formations & Niveaux d\'Excellence à Fès' 
-              : 'دوراتنا وبرامجنا التكوينية المتميزة في فاس'}
-          </h2>
-
-          <p className="text-base sm:text-lg text-slate-300">
-            {lang === 'fr'
-              ? 'Découvrez nos cursus de langues certifiantes et nos modules de soutien scolaire en effectifs réduits (8 à 12 personnes max).'
-              : 'اكتشف برامجنا اللغوية التأهيلية وحصص الدعم المدرسي في أفواج صغرى تضمن الاستفادة القصوى والمتابعة المستمرة.'}
+          <p className="section-intro">
+            {ar
+              ? "لغات حية، دعم مدرسي وتحضير للمباريات. اختر البرنامج الذي يناسب أهدافك واكتشف تفاصيله."
+              : "Langues vivantes, soutien scolaire ou préparation aux concours. Trouvez le parcours qui correspond à vos objectifs."}
           </p>
         </div>
-
-        {/* Category Filters */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12">
-          {academyConfig.categories.map((cat) => {
-            const isActive = activeCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-amber-400 ${
-                  isActive
-                    ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold shadow-md shadow-amber-950/30 scale-105'
-                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/60'
-                }`}
-              >
-                {t(cat.name)}
-              </button>
-            );
-          })}
+        <div
+          className="course-filters"
+          role="group"
+          aria-label={ar ? "تصفية البرامج" : "Filtrer les programmes"}
+        >
+          {academyConfig.categories.map((cat) => (
+            <button
+              key={cat.id}
+              aria-pressed={category === cat.id}
+              onClick={() => setCategory(cat.id)}
+            >
+              {t(cat.name)}
+              <span>
+                {cat.id === "all"
+                  ? academyConfig.courses.length
+                  : academyConfig.courses.filter((c) => c.category === cat.id)
+                      .length}
+              </span>
+            </button>
+          ))}
         </div>
-
-        {/* Courses Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredCourses.map((course) => {
-            const courseWhatsAppUrl = getCourseWhatsAppUrl(course, lang);
-
-            return (
-              <div
-                key={course.id}
-                className="group flex flex-col justify-between rounded-2xl bg-slate-800/60 hover:bg-slate-800/90 border border-slate-700 hover:border-amber-500/50 transition-all duration-300 shadow-xl hover:shadow-2xl overflow-hidden hover:-translate-y-1"
-              >
-                {/* Card Top / Header */}
-                <div className="p-6 sm:p-7 space-y-4">
-                  
-                  {/* Badge & Level */}
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                      <Sparkles className="w-3 h-3" />
-                      <span>{t(course.badge)}</span>
-                    </span>
-
-                    <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-700 text-slate-300">
-                      {t(course.level)}
-                    </span>
-                  </div>
-
-                  {/* Course Title */}
-                  <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
-                    {t(course.title)}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    {t(course.description)}
-                  </p>
-
-                  {/* Metadata Chips */}
-                  <div className="pt-2 border-t border-slate-700/60 space-y-2 text-xs text-slate-300">
-                    <div className="flex items-center gap-2">
-                      <Users className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-                      <span className="text-slate-400">{ui.groupCapacity} :</span>
-                      <span className="font-medium text-white">{t(course.groupSize)}</span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-                      <span className="text-slate-400">{ui.scheduleLabel} :</span>
-                      <span className="font-medium text-slate-200 line-clamp-1">{t(course.schedule)}</span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Target className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-                      <span className="text-slate-400">{ui.targetLabel} :</span>
-                      <span className="font-medium text-slate-200 line-clamp-1">{t(course.target)}</span>
-                    </div>
-                  </div>
-
-                  {/* Key Highlights */}
-                  <div className="pt-2 space-y-1.5">
-                    <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                      {ui.keyPoints}
-                    </div>
-                    {course.features.map((feat, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs text-slate-300">
-                        <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                        <span>{t(feat)}</span>
-                      </div>
-                    ))}
-                  </div>
-
+        <p
+          className="results-count"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {ar
+            ? `${courses.length} برامج متاحة`
+            : `${courses.length} programme${courses.length > 1 ? "s" : ""} à découvrir`}
+        </p>
+        <div className="course-grid">
+          {courses.map((course) => (
+            <article
+              className={`course-card category-${course.category}`}
+              key={course.id}
+            >
+              <div className="course-card-top">
+                <span className="course-monogram" aria-hidden="true">
+                  {courseMarks[course.id] ||
+                    (course.category === "languages"
+                      ? "Es"
+                      : course.category === "tutoring"
+                        ? "Σ"
+                        : course.category === "concours"
+                          ? "↗"
+                          : "Aa")}
+                </span>
+                <span className="course-badge">{t(course.badge)}</span>
+              </div>
+              <p className="course-level">{t(course.level)}</p>
+              <h3>{t(course.title)}</h3>
+              <dl className="course-facts">
+                <div>
+                  <dt>
+                    <Clock3 aria-hidden="true" />
+                    <span>{ar ? "المدة" : "Durée"}</span>
+                  </dt>
+                  <dd>{t(course.duration)}</dd>
                 </div>
-
-                {/* Card Action Button (Direct WhatsApp) */}
-                <div className="p-6 pt-0">
+                <div>
+                  <dt>
+                    <Users aria-hidden="true" />
+                    <span>{ui.groupCapacity}</span>
+                  </dt>
+                  <dd>{t(course.groupSize)}</dd>
+                </div>
+              </dl>
+              <details className="course-details">
+                <summary>
+                  {ar ? "تفاصيل البرنامج" : "Découvrir le programme"}
+                  <ChevronDown aria-hidden="true" />
+                </summary>
+                <div className="course-details-content">
+                  <p>{t(course.description)}</p>
+                  <div className="course-schedule">
+                    <CalendarDays aria-hidden="true" />
+                    <div>
+                      <strong>{ui.scheduleLabel}</strong>
+                      <p>{t(course.schedule)}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <strong>{ui.targetLabel}</strong>
+                    <p>{t(course.target)}</p>
+                  </div>
+                  <strong>{ui.keyPoints}</strong>
+                  <ul>
+                    {course.features.map((feature, i) => (
+                      <li key={i}>
+                        <Check aria-hidden="true" />
+                        {t(feature)}
+                      </li>
+                    ))}
+                  </ul>
                   <a
-                    href={courseWhatsAppUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-xs sm:text-sm shadow-md shadow-emerald-950/30 transition-all focus:outline-none focus:ring-2 focus:ring-emerald-400 group/btn"
+                    className="text-link"
+                    href="#inquiry"
+                    onClick={() => onChooseCourse(course.id)}
                   >
-                    <MessageCircle className="w-4 h-4 fill-white group-hover/btn:scale-110 transition-transform" />
-                    <span>{ui.courseDetailsBtn}</span>
+                    {ar ? "خصص طلبك لهذا البرنامج" : "Personnaliser ma demande"}
+                    <ArrowUpRight className="directional" aria-hidden="true" />
                   </a>
                 </div>
-
-              </div>
-            );
-          })}
+              </details>
+              <a
+                className="course-contact"
+                href={getCourseWhatsAppUrl(course, lang)}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${ui.courseDetailsBtn} — ${t(course.title)}`}
+              >
+                <MessageCircle aria-hidden="true" />
+                {ui.courseDetailsBtn}
+                <ArrowUpRight className="directional" aria-hidden="true" />
+              </a>
+            </article>
+          ))}
         </div>
-
-        {/* Bottom helper prompt */}
-        <div className="mt-12 text-center">
-          <p className="text-xs sm:text-sm text-slate-400">
-            {lang === 'fr' 
-              ? 'Besoin d\'un créneau sur mesure ou d\'une formule individuelle (one-to-one) ?' 
-              : 'هل تحتاج إلى توقيت خاص أو صيغة تدريب فردية خاصة؟'}{' '}
-            <a 
-              href="#contact" 
-              className="text-amber-400 hover:text-amber-300 font-semibold underline underline-offset-4"
-            >
-              {lang === 'fr' ? 'Consultez notre équipe sur WhatsApp' : 'تواصل مع مستشارنا عبر واتساب'}
-            </a>
-          </p>
+        <div className="courses-help">
+          <span>
+            {ar
+              ? "متردد في اختيار البرنامج المناسب؟"
+              : "Vous hésitez entre plusieurs programmes ?"}
+          </span>
+          <a className="text-link" href="#inquiry">
+            {ar
+              ? "لنحدد المسار المناسب معاً"
+              : "Trouvons votre parcours ensemble"}
+            <ArrowUpRight className="directional" aria-hidden="true" />
+          </a>
         </div>
-
       </div>
     </section>
   );

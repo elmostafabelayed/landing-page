@@ -1,4 +1,5 @@
-import { academyConfig } from '../config/academyConfig';
+import { academyConfig } from "../config/academyConfig.js";
+import { normalizeLanguage } from "./language.js";
 
 /**
  * Generate a WhatsApp click-to-chat URL with pre-filled message
@@ -6,12 +7,15 @@ import { academyConfig } from '../config/academyConfig';
  * @param {string} lang - 'fr' or 'ar'
  * @returns {string} Fully encoded WhatsApp URL
  */
-export function getWhatsAppUrl(customMessage, lang = 'fr') {
+export function getWhatsAppUrl(customMessage, lang = "fr") {
+  lang = normalizeLanguage(lang);
   const number = academyConfig.contact.whatsappNumber;
   let text = customMessage;
 
   if (!text) {
-    text = academyConfig.whatsappMessages.general[lang] || academyConfig.whatsappMessages.general.fr;
+    text =
+      academyConfig.whatsappMessages.general[lang] ||
+      academyConfig.whatsappMessages.general.fr;
   }
 
   const encodedText = encodeURIComponent(text);
@@ -24,7 +28,11 @@ export function getWhatsAppUrl(customMessage, lang = 'fr') {
  * @param {string} lang - 'fr' or 'ar'
  * @returns {string} WhatsApp URL
  */
-export function getCourseWhatsAppUrl(course, lang = 'fr') {
-  const message = course.whatsappText?.[lang] || course.whatsappText?.fr || academyConfig.whatsappMessages.general[lang];
+export function getCourseWhatsAppUrl(course, lang = "fr") {
+  lang = normalizeLanguage(lang);
+  const message =
+    course.whatsappText?.[lang] ||
+    course.whatsappText?.fr ||
+    academyConfig.whatsappMessages.general[lang];
   return getWhatsAppUrl(message, lang);
 }
