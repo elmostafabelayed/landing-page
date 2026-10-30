@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="16" fill="#0f294a"/>
+  <!-- Moroccan Star Accent in Gold -->
+  <polygon points="32,8 35,16 43,13 40,21 48,24 41,29 45,36 37,36 36,44 32,38 28,44 27,36 19,36 23,29 16,24 24,21 21,13 29,16" fill="#f59e0b" opacity="0.3"/>
+  <!-- Open Book Symbol -->
+  <path d="M14 44C20 40 26 40 32 43C38 40 44 40 50 44V23C44 19 38 19 32 22C26 19 20 19 14 23V44Z" stroke="#f8fafc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#1b3b6f"/>
+  <path d="M32 22V43" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+  <!-- Graduation / Quill Accent -->
+  <circle cx="32" cy="16" r="3" fill="#f59e0b"/>
+</svg>
