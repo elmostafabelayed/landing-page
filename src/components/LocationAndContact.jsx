@@ -44,7 +44,7 @@ export default function LocationAndContact() {
           <p className="section-intro">{ui.contactSubheading}</p>
         </div>
         <div className="contact-layout">
-          <div className="contact-details">
+          <div className="contact-details reveal-on-scroll">
             <div className="contact-row">
               <MapPin aria-hidden="true" />
               <div>
@@ -78,7 +78,7 @@ export default function LocationAndContact() {
               </a>
             </div>
           </div>
-          <div className="location-card">
+          <div className="location-card reveal-on-scroll stagger-2">
             <div className="location-card-top">
               <span>
                 <MapPin aria-hidden="true" />
@@ -101,7 +101,7 @@ export default function LocationAndContact() {
               <span className="map-place place-three">
                 {ar ? "فندق أطلس وليلي" : "Hôtel Atlas Volubilis"}
               </span>
-              <span className="academy-pin">
+              <span className="academy-pin animate-subtle-float">
                 <Building2 />
                 <span>{t(academy.shortName)}</span>
               </span>

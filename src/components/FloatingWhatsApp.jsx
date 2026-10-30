@@ -17,7 +17,10 @@ export default function FloatingWhatsApp() {
           : "Discuter directement sur WhatsApp"
       }
     >
-      <MessageCircle aria-hidden="true" />
+      <span style={{ position: "relative", display: "inline-flex" }}>
+        <MessageCircle aria-hidden="true" />
+        <span className="floating-beacon animate-beacon-pulse" aria-hidden="true" />
+      </span>
       <span>WhatsApp</span>
     </a>
   );

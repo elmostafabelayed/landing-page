@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { LanguageProvider } from "./context/LanguageContext";
 import { useLanguage } from "./context/useLanguage";
+import { useScrollReveal } from "./utils/useScrollReveal";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Courses from "./components/Courses";
@@ -15,6 +16,7 @@ import FloatingWhatsApp from "./components/FloatingWhatsApp";
 function AcademyPage() {
   const { lang } = useLanguage();
   const [selectedCourseId, setSelectedCourseId] = useState("fr-delf");
+  useScrollReveal();
   return (
     <div className="academy-page">
       <a className="skip-link" href="#main">

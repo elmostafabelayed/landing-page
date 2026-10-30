@@ -49,7 +49,7 @@ export default function FAQ() {
         <div className="faq-list">
           {academyConfig.faqs.map((faq, index) => (
             <div
-              className={`faq-item ${open === index ? "is-open" : ""}`}
+              className={`faq-item ${open === index ? "is-open" : ""} reveal-on-scroll stagger-${(index % 4) + 1}`}
               key={index}
             >
               <h3>

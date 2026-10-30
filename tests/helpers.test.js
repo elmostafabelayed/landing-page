@@ -47,3 +47,38 @@ test("each program keeps its own bilingual inquiry and correct recipient", () =>
     }
   }
 });
+
+test("security sanitization strips dangerous tags, protocol injections and limits length", async () => {
+  const { sanitizeName, sanitizeMessage, isSafeWhatsAppUrl } = await import(
+    "../src/utils/security.js"
+  );
+
+  // Strip script tags and XSS payloads
+  assert.equal(
+    sanitizeName("<script>alert('xss')</script>Karim"),
+    "alert('xss')Karim"
+  );
+  assert.equal(
+    sanitizeName("javascript:void(0)Salma"),
+    "void(0)Salma"
+  );
+
+  // Preserve accented characters and Arabic text
+  assert.equal(
+    sanitizeName("  سارة العلمي & Réda  "),
+    "سارة العلمي & Réda"
+  );
+
+  // Length enforcement
+  const longString = "A".repeat(100);
+  assert.equal(sanitizeName(longString, 30).length, 30);
+
+  // WhatsApp endpoint validation
+  assert.equal(
+    isSafeWhatsAppUrl(`https://wa.me/${academyConfig.contact.whatsappNumber}?text=test`),
+    true
+  );
+  assert.equal(isSafeWhatsAppUrl("https://evil-site.com/steal-data"), false);
+  assert.equal(isSafeWhatsAppUrl("javascript:alert(1)"), false);
+});
+

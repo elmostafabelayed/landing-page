@@ -39,7 +39,7 @@ export default function RegistrationProcess() {
         </div>
         <ol className="process-steps">
           {academyConfig.registrationSteps.map((step) => (
-            <li key={step.step}>
+            <li key={step.step} className={`reveal-on-scroll stagger-${step.step}`}>
               <span className="step-number" aria-hidden="true">
                 {step.number}
                 <span />

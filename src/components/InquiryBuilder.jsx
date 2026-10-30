@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { ArrowUpRight, Check, MessageCircle, ChevronDown } from "lucide-react";
+import { ArrowUpRight, Check, MessageCircle, ChevronDown, ShieldCheck } from "lucide-react";
 import { academyConfig } from "../config/academyConfig";
 import { useLanguage } from "../context/useLanguage";
 import { getWhatsAppUrl } from "../utils/whatsapp";
+import { sanitizeName } from "../utils/security";
 
 export default function InquiryBuilder({ selectedCourseId, onCourseChange }) {
   const { lang, t, ui } = useLanguage();
@@ -13,13 +14,14 @@ export default function InquiryBuilder({ selectedCourseId, onCourseChange }) {
   const course =
     academyConfig.courses.find((c) => c.id === selectedCourseId) ||
     academyConfig.courses[0];
+  const cleanName = sanitizeName(name, 50);
   const message = ar
-    ? `السلام عليكم أكاديمية الأندلس فاس.${name.trim() ? ` اسمي ${name.trim()}.` : ""} أود الاستفسار حول البرنامج: "${t(course.title)}". هدفي الأساسي: ${ui[objective]}. التوقيت المفضل لدي: ${ui[schedule]}. المرجو إفادتي بإجراءات التسجيل والمواعيد.`
-    : `Bonjour Académie Al-Andalous Fès.${name.trim() ? ` Je m'appelle ${name.trim()}.` : ""} Je souhaite me renseigner sur le programme : "${t(course.title)}". Mon objectif principal : ${ui[objective]}. Mon créneau souhaité : ${ui[schedule]}. Merci de m'indiquer les modalités d'inscription.`;
+    ? `السلام عليكم أكاديمية الأندلس فاس.${cleanName ? ` اسمي ${cleanName}.` : ""} أود الاستفسار حول البرنامج: "${t(course.title)}". هدفي الأساسي: ${ui[objective]}. التوقيت المفضل لدي: ${ui[schedule]}. المرجو إفادتي بإجراءات التسجيل والمواعيد.`
+    : `Bonjour Académie Al-Andalous Fès.${cleanName ? ` Je m'appelle ${cleanName}.` : ""} Je souhaite me renseigner sur le programme : "${t(course.title)}". Mon objectif principal : ${ui[objective]}. Mon créneau souhaité : ${ui[schedule]}. Merci de m'indiquer les modalités d'inscription.`;
   return (
     <section id="inquiry" className="section inquiry-section dark-section">
       <div className="container inquiry-layout">
-        <div className="inquiry-intro">
+        <div className="inquiry-intro reveal-on-scroll">
           <p className="eyebrow">
             <span className="section-number">04 /</span>
             {ar ? "لنتحدث عن أهدافك" : "PARLONS DE VOTRE PROJET"}
@@ -71,7 +73,7 @@ export default function InquiryBuilder({ selectedCourseId, onCourseChange }) {
             </div>
           </div>
         </div>
-        <div className="inquiry-panel">
+        <div className="inquiry-panel reveal-on-scroll stagger-2">
           <div className="panel-heading">
             <span className="panel-icon">
               <MessageCircle aria-hidden="true" />
@@ -99,9 +101,9 @@ export default function InquiryBuilder({ selectedCourseId, onCourseChange }) {
                 id="student-name"
                 name="name"
                 autoComplete="name"
-                maxLength={100}
+                maxLength={50}
                 value={name}
-                onChange={(event) => setName(event.target.value)}
+                onChange={(event) => setName(event.target.value.slice(0, 50))}
                 placeholder={ar ? "مثال: سلمى الفاسي" : "Ex. Salma Fassi"}
               />
             </div>
@@ -174,6 +176,14 @@ export default function InquiryBuilder({ selectedCourseId, onCourseChange }) {
               ? "يفتح واتساب برسالة جاهزة. الإرسال يتم بموافقتك داخل واتساب."
               : "WhatsApp s’ouvre avec votre message. Vous choisissez ensuite de l’envoyer."}
           </p>
+          <div className="security-badge" role="note">
+            <ShieldCheck aria-hidden="true" />
+            <span>
+              {ar
+                ? "محادثة مشفرة وآمنة من طرف لطرف عبر واتساب"
+                : "Échange direct sécurisé & chiffré de bout en bout"}
+            </span>
+          </div>
         </div>
       </div>
     </section>

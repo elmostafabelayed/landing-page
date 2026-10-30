@@ -1549,6 +1549,7 @@ summary::-webkit-details-marker {
   background: var(--green);
   box-shadow: 0 4px 18px #082f302e;
   border: 1px solid #ffffff33;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.25s ease;
 }
 .floating-whatsapp span {
   font-size: 11px;
@@ -1556,6 +1557,21 @@ summary::-webkit-details-marker {
 }
 .floating-whatsapp:hover {
   background: #104a3a;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(22, 98, 77, 0.35);
+}
+.floating-whatsapp:active {
+  transform: scale(0.96);
+}
+.floating-beacon {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #25d366;
+  border: 1.5px solid white;
 }
 /* Arabic is a complete typographic system, not an inherited Latin fallback. */
 html[lang="ar"] {
@@ -2377,3 +2393,129 @@ html[lang="ar"] .language-art {
 
 /* Let grid content shrink without changing the viewport width. */
 .inquiry-layout > *, .faq-layout > *, .contact-layout > *, .approach-layout > * { min-width: 0; }
+
+/* ==========================================================================
+   Micro-Animations & Visual Dynamics (Smooth, high performance, GPU-accelerated)
+   ========================================================================== */
+
+/* 1. Scroll-reveal utility */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays for sequential card entrance */
+.stagger-1 { transition-delay: 0.07s; }
+.stagger-2 { transition-delay: 0.14s; }
+.stagger-3 { transition-delay: 0.21s; }
+.stagger-4 { transition-delay: 0.28s; }
+.stagger-5 { transition-delay: 0.35s; }
+.stagger-6 { transition-delay: 0.42s; }
+
+/* 2. Floating badge animation */
+@keyframes subtle-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-subtle-float {
+  animation: subtle-float 3.5s ease-in-out infinite;
+}
+
+/* 3. Beacon radar pulse for live WhatsApp indicator */
+@keyframes beacon-ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 98, 77, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(22, 98, 77, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 98, 77, 0);
+  }
+}
+
+.animate-beacon-pulse {
+  animation: beacon-ripple 2.4s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+/* 4. Interactive card hover lift with subtle elevation */
+.course-card,
+.benefit,
+.step,
+.faq-item {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease;
+}
+
+.course-card:hover,
+.benefit:hover,
+.step:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px -6px rgba(16, 35, 44, 0.12);
+}
+
+.dark-section .course-card:hover,
+.dark-section .benefit:hover,
+.dark-section .step:hover {
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.35);
+}
+
+/* 5. Button micro-feedback */
+.button {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button:active {
+  transform: scale(0.975);
+}
+
+/* 6. Security badge styling */
+.security-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: #59696d;
+  background: rgba(22, 98, 77, 0.08);
+  border: 1px solid rgba(22, 98, 77, 0.2);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-top: 8px;
+}
+
+.dark-section .security-badge {
+  color: #b5c7c9;
+  background: rgba(22, 98, 77, 0.22);
+  border-color: rgba(232, 199, 137, 0.25);
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .animate-subtle-float,
+  .animate-beacon-pulse {
+    animation: none !important;
+  }
+  .course-card:hover,
+  .benefit:hover,
+  .step:hover,
+  .button:active {
+    transform: none !important;
+  }
+}
+

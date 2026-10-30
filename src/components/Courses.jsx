@@ -88,9 +88,9 @@ export default function Courses({ onChooseCourse }) {
             : `${courses.length} programme${courses.length > 1 ? "s" : ""} à découvrir`}
         </p>
         <div className="course-grid">
-          {courses.map((course) => (
+          {courses.map((course, i) => (
             <article
-              className={`course-card category-${course.category}`}
+              className={`course-card category-${course.category} reveal-on-scroll stagger-${(i % 3) + 1}`}
               key={course.id}
             >
               <div className="course-card-top">

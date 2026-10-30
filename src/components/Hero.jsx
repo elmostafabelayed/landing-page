@@ -12,7 +12,7 @@ export default function Hero() {
       <div className="hero-lines" aria-hidden="true" />
       <div className="container">
         <div className="hero-grid">
-          <div className="hero-copy">
+          <div className="hero-copy reveal-on-scroll">
             <p className="eyebrow hero-eyebrow">
               <span className="small-line" />
               {ar ? "أكاديمية الأندلس · فاس" : "ACADÉMIE AL-ANDALOUS · FÈS"}
@@ -62,7 +62,7 @@ export default function Hero() {
                 : "Sans engagement. Un parcours adapté à votre niveau."}
             </p>
           </div>
-          <div className="hero-visual">
+          <div className="hero-visual reveal-on-scroll stagger-2">
             <div className="academy-arch">
               <div className="arch-caption">
                 <BookOpen aria-hidden="true" />
@@ -92,7 +92,7 @@ export default function Hero() {
                 </span>
               </div>
             </div>
-            <div className="session-card">
+            <div className="session-card animate-subtle-float">
               <span className="session-mark">
                 <BookOpen aria-hidden="true" />
               </span>
@@ -111,7 +111,7 @@ export default function Hero() {
         </div>
         <div className="hero-metrics">
           {academyConfig.metrics.map((metric, index) => (
-            <div key={index} className="metric">
+            <div key={index} className={`metric reveal-on-scroll stagger-${index + 1}`}>
               <strong>
                 {ar && index === 2
                   ? "مجاني"

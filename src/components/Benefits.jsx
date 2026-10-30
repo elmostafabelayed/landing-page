@@ -24,7 +24,7 @@ export default function Benefits() {
   return (
     <section id="benefits" className="section approach-section">
       <div className="container approach-layout">
-        <div className="approach-intro">
+        <div className="approach-intro reveal-on-scroll">
           <p className="eyebrow">
             <span className="section-number">02 /</span>
             {ar ? "المنهجية" : "NOTRE APPROCHE"}
@@ -70,7 +70,7 @@ export default function Benefits() {
           {academyConfig.benefits.map((benefit, i) => {
             const Icon = icons[benefit.iconName] || Users;
             return (
-              <article className="benefit" key={benefit.id}>
+              <article className={`benefit reveal-on-scroll stagger-${(i % 3) + 1}`} key={benefit.id}>
                 <span className="benefit-icon">
                   <Icon aria-hidden="true" />
                 </span>
@@ -83,7 +83,7 @@ export default function Benefits() {
             );
           })}
         </div>
-        <div className="quality-note">
+        <div className="quality-note reveal-on-scroll">
           <ShieldCheck aria-hidden="true" />
           <div>
             <h3>
